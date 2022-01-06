@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Modelos;
+using AutenticacionApiSinIdentity.Servicios;
 using AutenticacionApiSinIdentity.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,13 @@ namespace AutenticacionApiSinIdentity.Controllers
     public class CuentasController : ControllerBase
     {
         private readonly IConfiguration configuration;
-
+        private readonly IAutenticar autenticar;
         public static List<Usuario> Usuarios = new List<Usuario>();
 
-        public CuentasController( IConfiguration configuration)
+        public CuentasController( IConfiguration configuration, IAutenticar autenticar)
         {
             this.configuration = configuration;
+            this.autenticar = autenticar;
         }
 
         [HttpPost("Registrar")]
@@ -31,8 +33,8 @@ namespace AutenticacionApiSinIdentity.Controllers
         {
             var usuario = new Usuario { Logon = credenciales.Logon, Password=credenciales.Password};
             Usuarios.Add(usuario);
-            return CrearToken(credenciales);
             
+            return autenticar.CrearToken(credenciales);
         }
 
         [HttpPost("login")]
@@ -47,7 +49,7 @@ namespace AutenticacionApiSinIdentity.Controllers
                     if (x.Password == resultado.Password)
                     {
                         
-                        return CrearToken(credenciales);
+                        return autenticar.CrearToken(credenciales);
                     }
                 }
             }
@@ -55,27 +57,6 @@ namespace AutenticacionApiSinIdentity.Controllers
             return BadRequest("Login incorrecto");
             
         }
-        private RespuestaAutenticacion CrearToken(Credenciales credencialesUsuario)
-        {
-            var claims = new List<Claim>()
-            {
-                new Claim("Logon", credencialesUsuario.Logon)
-
-             };
-
-            var llave = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["llavejwt"]));
-            var creds = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
-            var expiracion = DateTime.UtcNow.AddYears(1);
-
-            var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
-                expires: expiracion, signingCredentials: creds);
-
-            return new RespuestaAutenticacion()
-            {
-                Token = new JwtSecurityTokenHandler().WriteToken(securityToken),
-                Expiracion = expiracion
-            };
-
-        }
+        
     }
 }

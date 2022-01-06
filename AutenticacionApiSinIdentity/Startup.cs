@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutenticacionApiSinIdentity.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -71,6 +72,8 @@ namespace AutenticacionApiSinIdentity
                     Encoding.UTF8.GetBytes(Configuration["llavejwt"])),
                     ClockSkew = TimeSpan.Zero
                 });
+            //Agrego el servicio de autenticacion
+            services.AddScoped<IAutenticar, AutenticarJWT>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
