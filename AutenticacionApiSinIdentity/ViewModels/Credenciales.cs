@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutenticacionApiSinIdentity.ViewModels
 {
+    /// <summary>
+    /// Credenciales que necesita el cliente para ser autenticado
+    /// </summary>
     public class Credenciales
     {
         [Required]

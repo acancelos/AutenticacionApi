@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AutenticacionApiSinIdentity.Servicios
 {
+
     public class AutenticarJWT : IAutenticar
     {
         private readonly IConfiguration configuration;
@@ -18,6 +19,12 @@ namespace AutenticacionApiSinIdentity.Servicios
         {
             this.configuration = configuration;
         }
+
+        /// <summary>
+        /// Crea y devuelve el Token al cliente una vez que se registra o hace un login
+        /// </summary>
+        /// <param name="credencialesUsuario"></param>
+        /// <returns></returns>
         public RespuestaAutenticacion CrearToken(Credenciales credencialesUsuario)
         {
             var claims = new List<Claim>()

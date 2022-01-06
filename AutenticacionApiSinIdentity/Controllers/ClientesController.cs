@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutenticacionApiSinIdentity.Controllers
 {
+    /// <summary>
+    /// Este controlador lo uso solo para probar la autenticación.
+    /// Solo recibe una petición get que devuelve un listado de clientes hardcodeado en una lista
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase
@@ -27,6 +31,7 @@ namespace AutenticacionApiSinIdentity.Controllers
             new Cliente(){Id=1,Nombre="Pedro",Apellido="Gonzalez"},
         };
 
+        // le agrego el atribute authoriza especificando el AutheticationScheme
         [HttpGet("VerClientes")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public List<Cliente> GetClientes()

@@ -20,6 +20,7 @@ namespace AutenticacionApiSinIdentity
 {
     public class Startup
     {
+        //inyecto Iconfiguration para obtener la llave que está en el appsettings.Json
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,6 +33,8 @@ namespace AutenticacionApiSinIdentity
         {
 
             services.AddControllers();
+
+            //configuracion de Swagger para usar autenticacion
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutenticacionApiSinIdentity", Version = "v1" });
@@ -60,7 +63,7 @@ namespace AutenticacionApiSinIdentity
                     }
                 });
             });
-
+            //Agrego el servicio de autenticacion JWTBearer
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opciones => opciones.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -72,7 +75,7 @@ namespace AutenticacionApiSinIdentity
                     Encoding.UTF8.GetBytes(Configuration["llavejwt"])),
                     ClockSkew = TimeSpan.Zero
                 });
-            //Agrego el servicio de autenticacion
+            //Agrego el servicio de autenticacion indicandole que tiene que instanciar AutenticarJWT en caso de llamar a la Interface
             services.AddScoped<IAutenticar, AutenticarJWT>();
         }
 

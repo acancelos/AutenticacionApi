@@ -6,6 +6,7 @@ using AutenticacionApiSinIdentity.ViewModels;
 
 namespace AutenticacionApiSinIdentity.Servicios
 {
+
     public interface IAutenticar
     {
         RespuestaAutenticacion CrearToken(Credenciales credencialesUsuario);
