@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Microsoft.Extensions.Options;
 
 namespace AutenticacionApiSinIdentity.Controllers
 {
@@ -19,9 +21,9 @@ namespace AutenticacionApiSinIdentity.Controllers
     public class ClientesController : ControllerBase
     {
 
-        public ClientesController()
+        public ClientesController(IOptions<Usuario> options)
         {
-
+            this.options = options;
         }
 
         public static List<Cliente> ListaClientes = new List<Cliente>()
@@ -30,12 +32,14 @@ namespace AutenticacionApiSinIdentity.Controllers
             new Cliente(){Id=1,Nombre="Jose",Apellido="Rodriguez"},
             new Cliente(){Id=1,Nombre="Pedro",Apellido="Gonzalez"},
         };
+        private readonly IOptions<Usuario> options;
 
         // le agrego el atribute authoriza especificando el AutheticationScheme
         [HttpGet("VerClientes")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public List<Cliente> GetClientes()
         {
+            var x = options.Value;
             return  ListaClientes;
         }
 

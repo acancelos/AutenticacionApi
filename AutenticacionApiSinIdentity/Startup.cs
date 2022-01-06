@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutenticacionApiSinIdentity.Modelos;
 using AutenticacionApiSinIdentity.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -77,6 +78,10 @@ namespace AutenticacionApiSinIdentity
                 });
             //Agrego el servicio de autenticacion indicandole que tiene que instanciar AutenticarJWT en caso de llamar a la Interface
             services.AddScoped<IAutenticar, AutenticarJWT>();
+
+            services.Configure<Usuario>(Configuration.GetSection(Usuario.Key));
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
