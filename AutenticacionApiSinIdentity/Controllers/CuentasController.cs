@@ -50,6 +50,13 @@ namespace AutenticacionApiSinIdentity.Controllers
         public async Task<ActionResult<RespuestaAutenticacion>> Registrar(Credenciales credenciales)
         {
             var usuario = new Usuario { Logon = credenciales.Logon, Password=credenciales.Password};
+            //ANtes de agregar el usuario verifico que el Logon sea unico
+
+            var existe = await context.Usuarios.AnyAsync(x => x.Logon == credenciales.Logon);
+            if (existe)
+            {
+                return BadRequest($"El Logon {credenciales.Logon} ya existe en el sistema. Elija otro.");
+            }
             context.Usuarios.Add(usuario);
             await context.SaveChangesAsync();
             
@@ -134,7 +141,10 @@ namespace AutenticacionApiSinIdentity.Controllers
             }
             else
             {
-
+                if (!usuario.Claims.Exists(x => x.Clave == "Admin"))
+                {
+                    return BadRequest("El usuario NO es administrador");
+                }
                 usuario.Claims.Remove(usuario.Claims.Find(x => x.Clave == "Admin"));
                 context.SaveChanges();
             }
