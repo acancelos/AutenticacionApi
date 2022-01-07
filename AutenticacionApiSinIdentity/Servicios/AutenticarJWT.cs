@@ -4,7 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutenticacionApiSinIdentity.Controllers;
+using AutenticacionApiSinIdentity.Datos;
 using AutenticacionApiSinIdentity.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,10 +17,12 @@ namespace AutenticacionApiSinIdentity.Servicios
     public class AutenticarJWT : IAutenticar
     {
         private readonly IConfiguration configuration;
+        private readonly ApplicationDbContext context;
 
-        public AutenticarJWT(IConfiguration configuration)
+        public AutenticarJWT(IConfiguration configuration, ApplicationDbContext context)
         {
             this.configuration = configuration;
+            this.context = context;
         }
 
         /// <summary>
@@ -29,13 +34,19 @@ namespace AutenticacionApiSinIdentity.Servicios
         {
             var claims = new List<Claim>()
             {
-                new Claim("Logon", credencialesUsuario.Logon)
-
+                new Claim("Logon", credencialesUsuario.Logon),
+                new Claim("Otro Claim", "1")
              };
+
+            var usuario = context.Usuarios.Where(x => x.Logon == credencialesUsuario.Logon).Include(x=>x.Claims).FirstOrDefault();
+            foreach (var c in usuario.Claims)
+            {
+                claims.Add(new Claim(c.Clave, c.valor));
+            }
 
             var llave = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["llavejwt"]));
             var creds = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
-            var expiracion = DateTime.UtcNow.AddYears(1);
+            var expiracion = DateTime.UtcNow.AddMinutes(10);
 
             var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expiracion, signingCredentials: creds);
@@ -46,5 +57,7 @@ namespace AutenticacionApiSinIdentity.Servicios
                 Expiracion = expiracion
             };
         }
+
+
     }
 }

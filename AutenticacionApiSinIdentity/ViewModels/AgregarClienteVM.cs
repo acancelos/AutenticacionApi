@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AutenticacionApiSinIdentity.Modelos
+namespace AutenticacionApiSinIdentity.ViewModels
 {
-    public class Cliente
+    public class AgregarClienteVM
     {
-        public int Id { get; set; }
         [Required]
         public string Nombre { get; set; }
         [Required]

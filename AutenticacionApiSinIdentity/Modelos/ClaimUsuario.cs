@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace AutenticacionApiSinIdentity.Modelos
 {
-    public class Cliente
+    public class ClaimUsuario
     {
         public int Id { get; set; }
         [Required]
-        public string Nombre { get; set; }
+        public string Clave { get; set; }
         [Required]
-        public string Apellido { get; set; }
+        public string valor { get; set; }
+
+        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
     }
 }

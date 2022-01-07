@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutenticacionApiSinIdentity.Datos;
 using AutenticacionApiSinIdentity.Modelos;
 using AutenticacionApiSinIdentity.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +36,9 @@ namespace AutenticacionApiSinIdentity
         {
 
             services.AddControllers();
+
+            services.AddDbContext<ApplicationDbContext>(
+               options => options.UseSqlServer(Configuration.GetConnectionString("Conexion")));
 
             //configuracion de Swagger para usar autenticacion
             services.AddSwaggerGen(c =>
@@ -80,6 +85,12 @@ namespace AutenticacionApiSinIdentity
             services.AddScoped<IAutenticar, AutenticarJWT>();
 
             services.Configure<Usuario>(Configuration.GetSection(Usuario.Key));
+
+            //Autorizacion por medio de los Claims
+            services.AddAuthorization(opciones =>
+            {
+                opciones.AddPolicy("Admin", politica => politica.RequireClaim("Admin"));
+            });
 
 
         }
