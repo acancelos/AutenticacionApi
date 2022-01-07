@@ -82,7 +82,7 @@ namespace AutenticacionApiSinIdentity
                     ClockSkew = TimeSpan.Zero
                 });
             //Agrego el servicio de autenticacion indicandole que tiene que instanciar AutenticarJWT en caso de llamar a la Interface
-            services.AddScoped<IAutenticar, AutenticarJWT>();
+            services.AddScoped<IGenerarToken, AutenticarJWT>();
 
             services.Configure<Usuario>(Configuration.GetSection(Usuario.Key));
 

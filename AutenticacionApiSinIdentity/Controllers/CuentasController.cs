@@ -27,13 +27,13 @@ namespace AutenticacionApiSinIdentity.Controllers
     public class CuentasController : ControllerBase
     {
        
-        private readonly IAutenticar autenticar;
+        private readonly IGenerarToken autenticar;
         private readonly ApplicationDbContext context;
 
         
 
         //mediante inyección de dependencias agrego el servicio autenticar
-        public CuentasController(  IAutenticar autenticar, ApplicationDbContext context)
+        public CuentasController(  IGenerarToken autenticar, ApplicationDbContext context)
         {
             
             this.autenticar = autenticar;

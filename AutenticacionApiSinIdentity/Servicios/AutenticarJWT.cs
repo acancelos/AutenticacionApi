@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace AutenticacionApiSinIdentity.Servicios
 {
 
-    public class AutenticarJWT : IAutenticar
+    public class AutenticarJWT : IGenerarToken
     {
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
