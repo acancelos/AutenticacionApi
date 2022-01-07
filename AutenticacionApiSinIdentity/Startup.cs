@@ -92,6 +92,9 @@ namespace AutenticacionApiSinIdentity
                 opciones.AddPolicy("Admin", politica => politica.RequireClaim("Admin"));
             });
 
+            services.AddDataProtection();
+
+            services.AddTransient<Encriptacion>();
 
         }
 

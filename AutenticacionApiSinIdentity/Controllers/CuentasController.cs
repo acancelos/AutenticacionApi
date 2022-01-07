@@ -10,6 +10,7 @@ using AutenticacionApiSinIdentity.Servicios;
 using AutenticacionApiSinIdentity.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace AutenticacionApiSinIdentity.Controllers
 {
     /// <summary>
     /// Este controlador sirve para registrar un usuario y hacer un login
-    /// El registro es cntra una lista static de usuarios a modo de prueba
+    /// El registro se almacena en una LocalDb
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -29,15 +30,17 @@ namespace AutenticacionApiSinIdentity.Controllers
        
         private readonly IGenerarToken autenticar;
         private readonly ApplicationDbContext context;
-
+        private readonly Encriptacion encriptacion;
+        private readonly IDataProtector dataProtector;
         
 
         //mediante inyección de dependencias agrego el servicio autenticar
-        public CuentasController(  IGenerarToken autenticar, ApplicationDbContext context)
+        public CuentasController(  IGenerarToken autenticar, ApplicationDbContext context, Encriptacion encriptacion)
         {
             
             this.autenticar = autenticar;
             this.context = context;
+            this.encriptacion = encriptacion;
         }
 
 
@@ -49,8 +52,11 @@ namespace AutenticacionApiSinIdentity.Controllers
         [HttpPost("Registrar")]
         public async Task<ActionResult<RespuestaAutenticacion>> Registrar(Credenciales credenciales)
         {
-            var usuario = new Usuario { Logon = credenciales.Logon, Password=credenciales.Password};
+            var PassEncriptada = encriptacion.Encriptar(credenciales.Password);
+            var usuario = new Usuario { Logon = credenciales.Logon, Password= PassEncriptada };
             //ANtes de agregar el usuario verifico que el Logon sea unico
+
+            
 
             var existe = await context.Usuarios.AnyAsync(x => x.Logon == credenciales.Logon);
             if (existe)
@@ -65,7 +71,7 @@ namespace AutenticacionApiSinIdentity.Controllers
         }
 
         /// <summary>
-        /// Controlador para hacer un login contra la lista static
+        /// Controlador para hacer un login 
         /// Devuelve el Token si está todo OK
         /// </summary>
         /// <param name="credenciales"></param>
@@ -73,7 +79,8 @@ namespace AutenticacionApiSinIdentity.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<RespuestaAutenticacion>> Login(Credenciales credenciales)
         {
-            var resultado = new Usuario { Logon = credenciales.Logon, Password = credenciales.Password };
+            var PassEncriptada = encriptacion.Encriptar(credenciales.Password);
+            var resultado = new Usuario { Logon = credenciales.Logon, Password = PassEncriptada };
 
 
             var usuarioDb = await context.Usuarios.Where(x => x.Logon == credenciales.Logon).Include(x => x.Claims).FirstOrDefaultAsync();
@@ -83,7 +90,7 @@ namespace AutenticacionApiSinIdentity.Controllers
                 return BadRequest("Login incorrecto");
             }
 
-            if(usuarioDb.Password!= credenciales.Password)
+            if(usuarioDb.Password!= PassEncriptada)
             {
                 return BadRequest("Login incorrecto");
             }

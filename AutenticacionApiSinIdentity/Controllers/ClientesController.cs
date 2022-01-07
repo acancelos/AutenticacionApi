@@ -43,6 +43,7 @@ namespace AutenticacionApiSinIdentity.Controllers
             var logon = HttpContext.User.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
             //Usando IOptions
             var x = options.Value;
+
             return  context.Clientes.ToList();
         }
 
