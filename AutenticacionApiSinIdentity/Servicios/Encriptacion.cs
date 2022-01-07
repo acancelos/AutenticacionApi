@@ -20,7 +20,7 @@ namespace AutenticacionApiSinIdentity.Servicios
         {
             try
             {
-                string key = configuration["Llave"]; //llave para encriptar datos
+                string key = configuration["Llave"]; //llave para encriptar en variable de ambiente
                 byte[] keyArray;
                 byte[] Arreglo_a_Cifrar = UTF8Encoding.UTF8.GetBytes(Cadena);
 
