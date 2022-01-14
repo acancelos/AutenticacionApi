@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Datos;
+using AutenticacionApiSinIdentity.Interfaces;
 using AutenticacionApiSinIdentity.Modelos;
 using AutenticacionApiSinIdentity.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,7 +25,7 @@ namespace AutenticacionApiSinIdentity
     public class Startup
     {
         //inyecto Iconfiguration para obtener la llave que está en el appsettings.Json
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration )
         {
             Configuration = configuration;
         }
@@ -82,7 +83,11 @@ namespace AutenticacionApiSinIdentity
                     ClockSkew = TimeSpan.Zero
                 });
             //Agrego el servicio de autenticacion indicandole que tiene que instanciar AutenticarJWT en caso de llamar a la Interface
-            services.AddScoped<IGenerarToken, AutenticarJWT>();
+           
+            
+            services.AddScoped<IToken, TokenJWT>();
+            services.AddScoped<IAutenticar, CustomAuthentication>();
+
 
             services.Configure<Usuario>(Configuration.GetSection(Usuario.Key));
 

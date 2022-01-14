@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Datos;
+using AutenticacionApiSinIdentity.Interfaces;
 using AutenticacionApiSinIdentity.Modelos;
 using AutenticacionApiSinIdentity.Servicios;
 using AutenticacionApiSinIdentity.ViewModels;
@@ -28,19 +29,24 @@ namespace AutenticacionApiSinIdentity.Controllers
     public class CuentasController : ControllerBase
     {
        
-        private readonly IGenerarToken autenticar;
+        private readonly IToken token;
         private readonly ApplicationDbContext context;
         private readonly Encriptacion encriptacion;
+        private readonly IAuthorizationService authorizationService;
+        private readonly IAutenticar autenticar;
         private readonly IDataProtector dataProtector;
         
 
         //mediante inyección de dependencias agrego el servicio autenticar
-        public CuentasController(  IGenerarToken autenticar, ApplicationDbContext context, Encriptacion encriptacion)
+        public CuentasController(  IToken token, ApplicationDbContext context, Encriptacion encriptacion,
+            IAuthorizationService authorizationService, IAutenticar autenticar)
         {
             
-            this.autenticar = autenticar;
+            this.token = token;
             this.context = context;
             this.encriptacion = encriptacion;
+            this.authorizationService = authorizationService;
+            this.autenticar = autenticar;
         }
 
 
@@ -57,7 +63,6 @@ namespace AutenticacionApiSinIdentity.Controllers
             //ANtes de agregar el usuario verifico que el Logon sea unico
 
             
-
             var existe = await context.Usuarios.AnyAsync(x => x.Logon == credenciales.Logon);
             if (existe)
             {
@@ -67,7 +72,7 @@ namespace AutenticacionApiSinIdentity.Controllers
             await context.SaveChangesAsync();
             
             //Uso el servicio autenticar que genera el Token
-            return autenticar.CrearToken(credenciales);
+            return token.CrearToken(credenciales);
         }
 
         /// <summary>
@@ -77,40 +82,42 @@ namespace AutenticacionApiSinIdentity.Controllers
         /// <param name="credenciales"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        public async Task<ActionResult<RespuestaAutenticacion>> Login(Credenciales credenciales)
+        public  ActionResult<RespuestaAutenticacion> Login(Credenciales credenciales)
         {
-            var PassEncriptada = encriptacion.Encriptar(credenciales.Password);
-            var resultado = new Usuario { Logon = credenciales.Logon, Password = PassEncriptada };
 
-
-            var usuarioDb = await context.Usuarios.Where(x => x.Logon == credenciales.Logon).Include(x => x.Claims).FirstOrDefaultAsync();
-
-            if (usuarioDb == null)
+            if (autenticar.VerificarCredenciales(credenciales))
+            {
+                return token.CrearToken(credenciales);
+            }
+            else
             {
                 return BadRequest("Login incorrecto");
-            }
-
-            if(usuarioDb.Password!= PassEncriptada)
-            {
-                return BadRequest("Login incorrecto");
-            }
-
-            return autenticar.CrearToken(credenciales);
-
-           
+            }      
         }
 
-        [HttpGet("RenovarToken")]
+        [HttpGet("Pruebas")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public ActionResult Pruebas()
+        {
+            return Ok(new
+            {
+                user = authorizationService.ToString(),
+                otro = authorizationService.AuthorizeAsync(User, "Admin")
+            });
+        }
+
+        [HttpGet("RefreshToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public ActionResult<RespuestaAutenticacion> RenovarToken()
         {
             var logonClaim = HttpContext.User.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
+            
             var logon = logonClaim.Value;
             var credenciales = new Credenciales()
             {
                 Logon = logon
             };
-            return autenticar.CrearToken(credenciales);
+            return token.CrearToken(credenciales);
         }
 
         [HttpPost("HacerAdmin")]

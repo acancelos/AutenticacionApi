@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.ViewModels;
 
-namespace AutenticacionApiSinIdentity.Servicios
+namespace AutenticacionApiSinIdentity.Interfaces
 {
-
-    public interface IGenerarToken
+    public interface IToken
     {
         RespuestaAutenticacion CrearToken(Credenciales credencialesUsuario);
 
-       
+        RespuestaAutenticacion RefreshToken(Credenciales credencialesUsuario);
+
     }
 }
