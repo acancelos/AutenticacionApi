@@ -97,7 +97,7 @@ namespace AutenticacionApiSinIdentity.Servicios
             try
             {
                 var claims = handler.ValidateToken(TokenRecibido, validations, out var tokenSecure);
-
+                
                 //ACa se puede verificar el umbral de refresh
                 if (tokenSecure.ValidTo.AddHours(1) > DateTime.UtcNow) return true;
                 else return false;

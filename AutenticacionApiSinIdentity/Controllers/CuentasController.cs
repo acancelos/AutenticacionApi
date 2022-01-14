@@ -123,6 +123,8 @@ namespace AutenticacionApiSinIdentity.Controllers
                 string[] TokenArray = ((string)ResultadoHeadear).Split(' ');
                 string TokenRecibido = TokenArray[1];
                 var handler = new JwtSecurityTokenHandler();
+
+                
                 var jwtSecurityToken = handler.ReadJwtToken(TokenRecibido);
                 Credenciales credenciales = new Credenciales();
                 var logonClaim = jwtSecurityToken.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
