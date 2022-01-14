@@ -38,4 +38,4 @@ El servicio expondrá dos end-points:
 *	Refresh Token: Recibe un token. Si el token está vencido y se encuentra dentro del umbral de tolerancia de refresh devuelve un nuevo token. Si está fuera del umbral devuelve un 401 y deberá ser redirigido nuevamente al login.
 
 
-
+![Diagrama de actividad](https://github.com/acancelos/AutenticacionApi/blob/master/Autenticacion.jpg?raw=true)
