@@ -130,8 +130,7 @@ namespace AutenticacionApiSinIdentity.Controllers
                 {
                     
                     credenciales.Logon = logonClaim.Value;
-                }
-                
+                }             
 
                 RespuestaAutenticacion respuesta = token.RefreshToken(autenticar.ObtenerUsuario(credenciales), TokenRecibido);
 

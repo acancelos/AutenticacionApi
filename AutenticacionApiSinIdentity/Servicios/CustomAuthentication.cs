@@ -45,7 +45,7 @@ namespace AutenticacionApiSinIdentity.Servicios
             else return false;
         }
 
-        public async Task<bool> ValidarUsuarioPass(Credenciales cred)
+        private async Task<bool> ValidarUsuarioPass(Credenciales cred)
         {
             var PassEncriptada = encriptacion.Encriptar(cred.Password);
             var resultado = new Usuario { Logon = cred.Logon, Password = PassEncriptada };
