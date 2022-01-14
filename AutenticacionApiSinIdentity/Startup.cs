@@ -37,6 +37,7 @@ namespace AutenticacionApiSinIdentity
         {
 
             services.AddControllers();
+           
 
             services.AddDbContext<ApplicationDbContext>(
                options => options.UseSqlServer(Configuration.GetConnectionString("Conexion")));
@@ -108,6 +109,7 @@ namespace AutenticacionApiSinIdentity
             services.AddDataProtection();
 
             services.AddTransient<Encriptacion>();
+            
 
         }
 

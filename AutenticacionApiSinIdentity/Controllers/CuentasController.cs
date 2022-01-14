@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Datos;
 using AutenticacionApiSinIdentity.Interfaces;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AutenticacionApiSinIdentity.Controllers
@@ -28,18 +31,20 @@ namespace AutenticacionApiSinIdentity.Controllers
     [ApiController]
     public class CuentasController : ControllerBase
     {
-       
+
         private readonly IToken token;
         private readonly ApplicationDbContext context;
         private readonly Encriptacion encriptacion;
         private readonly IAuthorizationService authorizationService;
         private readonly IAutenticar autenticar;
+        private readonly IConfiguration configuration;
         private readonly IDataProtector dataProtector;
-        
+
+
 
         //mediante inyección de dependencias agrego el servicio autenticar
-        public CuentasController(  IToken token, ApplicationDbContext context, Encriptacion encriptacion,
-            IAuthorizationService authorizationService, IAutenticar autenticar)
+        public CuentasController(IToken token, ApplicationDbContext context, Encriptacion encriptacion,
+            IAuthorizationService authorizationService, IAutenticar autenticar, IConfiguration configuration)
         {
             
             this.token = token;
@@ -47,6 +52,7 @@ namespace AutenticacionApiSinIdentity.Controllers
             this.encriptacion = encriptacion;
             this.authorizationService = authorizationService;
             this.autenticar = autenticar;
+            this.configuration = configuration;
         }
 
 
@@ -107,17 +113,36 @@ namespace AutenticacionApiSinIdentity.Controllers
         }
 
         [HttpGet("RefreshToken")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public ActionResult<RespuestaAutenticacion> RenovarToken()
         {
-            var logonClaim = HttpContext.User.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
-            
-            var logon = logonClaim.Value;
-            var credenciales = new Credenciales()
+            StringValues ResultadoHeadear;
+            HttpContext.Request.Headers.TryGetValue("Authorization", out ResultadoHeadear);
+            if ((string)ResultadoHeadear != null)
             {
-                Logon = logon
-            };
-            return token.CrearToken(credenciales);
+                string[] TokenArray = ((string)ResultadoHeadear).Split(' ');
+                string TokenRecibido = TokenArray[1];
+                var handler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = handler.ReadJwtToken(TokenRecibido);
+                Credenciales credenciales = new Credenciales();
+                var logonClaim = jwtSecurityToken.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
+                if (logonClaim != null)
+                {
+                    
+                    credenciales.Logon = logonClaim.Value;
+                }
+                
+
+                RespuestaAutenticacion respuesta = token.RefreshToken(credenciales, TokenRecibido);
+
+                if (respuesta != null) return respuesta;
+                return BadRequest("Token invalido o vencido");
+            }
+            else
+            {
+                return BadRequest("No se envió ningún Token");
+            }          
+
         }
 
         [HttpPost("HacerAdmin")]

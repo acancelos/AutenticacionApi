@@ -10,7 +10,7 @@ namespace AutenticacionApiSinIdentity.Interfaces
     {
         RespuestaAutenticacion CrearToken(Credenciales credencialesUsuario);
 
-        RespuestaAutenticacion RefreshToken(Credenciales credencialesUsuario);
+        RespuestaAutenticacion RefreshToken(Credenciales credencialesUsuario, string TokenRecibido);
 
     }
 }

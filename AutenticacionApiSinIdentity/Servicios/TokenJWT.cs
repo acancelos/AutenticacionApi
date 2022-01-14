@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Controllers;
 using AutenticacionApiSinIdentity.Datos;
 using AutenticacionApiSinIdentity.Interfaces;
 using AutenticacionApiSinIdentity.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AutenticacionApiSinIdentity.Servicios
@@ -19,11 +22,13 @@ namespace AutenticacionApiSinIdentity.Servicios
     {
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
+        
 
         public TokenJWT(IConfiguration configuration, ApplicationDbContext context)
         {
             this.configuration = configuration;
             this.context = context;
+           
         }
 
         /// <summary>
@@ -47,7 +52,7 @@ namespace AutenticacionApiSinIdentity.Servicios
 
             var llave = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["llavejwt"]));
             var creds = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
-            var expiracion = DateTime.UtcNow.AddMonths(2);
+            var expiracion = DateTime.UtcNow.AddSeconds(2);
             
             var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expiracion, signingCredentials: creds);
@@ -59,10 +64,48 @@ namespace AutenticacionApiSinIdentity.Servicios
             };
         }
 
-        public RespuestaAutenticacion RefreshToken(Credenciales credencialesUsuario)
+        public RespuestaAutenticacion RefreshToken(Credenciales credencialesUsuario, string TokenRecibido)
         {
+          
 
-            return null;
+            if (ValidarToken(TokenRecibido)) return CrearToken(credencialesUsuario);
+            else return null;
         }
+
+        private bool ValidarToken(string TokenRecibido)
+        {
+            
+            var handler = new JwtSecurityTokenHandler();
+            //var jwtSecurityToken = handler.ReadJwtToken(TokenRecibido);
+            //Valido el Token
+            string secret = configuration["llaveJWT"];
+            var key = Encoding.ASCII.GetBytes(secret);
+            var validations = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+
+            try
+            {
+                var claims = handler.ValidateToken(TokenRecibido, validations, out var tokenSecure);
+
+                //ACa se puede verificar el umbral de refresh
+                if (tokenSecure.ValidTo > DateTime.UtcNow) return true;
+                else return false;
+               
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+            
+        }
+
+        
     }
 }
