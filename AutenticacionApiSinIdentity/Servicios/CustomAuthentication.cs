@@ -31,9 +31,11 @@ namespace AutenticacionApiSinIdentity.Servicios
             throw new NotImplementedException();
         }
 
-        public void ObtenerUsuario()
+        public Usuario  ObtenerUsuario(Credenciales credenciales)
         {
-            throw new NotImplementedException();
+            var usuario = context.Usuarios.Where(x => x.Logon == credenciales.Logon).Include(x => x.Claims).FirstOrDefault();
+
+            return usuario;
         }
 
         public  bool  VerificarCredenciales(Credenciales creds)

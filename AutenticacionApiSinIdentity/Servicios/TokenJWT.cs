@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Controllers;
 using AutenticacionApiSinIdentity.Datos;
 using AutenticacionApiSinIdentity.Interfaces;
+using AutenticacionApiSinIdentity.Modelos;
 using AutenticacionApiSinIdentity.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -36,15 +37,15 @@ namespace AutenticacionApiSinIdentity.Servicios
         /// </summary>
         /// <param name="credencialesUsuario"></param>
         /// <returns></returns>
-        public RespuestaAutenticacion CrearToken(Credenciales credencialesUsuario)
+        public RespuestaAutenticacion CrearToken(Usuario usuario)
         {
             var claims = new List<Claim>()
             {
-                new Claim("Logon", credencialesUsuario.Logon),
-                new Claim("esAdmin", "1")
-             };
+                new Claim("Logon", usuario.Logon),
+            };
 
-            var usuario = context.Usuarios.Where(x => x.Logon == credencialesUsuario.Logon).Include(x => x.Claims).FirstOrDefault();
+            
+            
             foreach (var c in usuario.Claims)
             {
                 claims.Add(new Claim(c.Clave, c.valor));
@@ -64,11 +65,11 @@ namespace AutenticacionApiSinIdentity.Servicios
             };
         }
 
-        public RespuestaAutenticacion RefreshToken(Credenciales credencialesUsuario, string TokenRecibido)
+        public RespuestaAutenticacion RefreshToken(Usuario usuario, string TokenRecibido)
         {
           
 
-            if (ValidarToken(TokenRecibido)) return CrearToken(credencialesUsuario);
+            if (ValidarToken(TokenRecibido)) return CrearToken(usuario);
             else return null;
         }
 
@@ -76,7 +77,7 @@ namespace AutenticacionApiSinIdentity.Servicios
         {
             
             var handler = new JwtSecurityTokenHandler();
-            //var jwtSecurityToken = handler.ReadJwtToken(TokenRecibido);
+            
             //Valido el Token
             string secret = configuration["llaveJWT"];
             var key = Encoding.ASCII.GetBytes(secret);
@@ -93,7 +94,7 @@ namespace AutenticacionApiSinIdentity.Servicios
                 var claims = handler.ValidateToken(TokenRecibido, validations, out var tokenSecure);
 
                 //ACa se puede verificar el umbral de refresh
-                if (tokenSecure.ValidTo > DateTime.UtcNow) return true;
+                if (tokenSecure.ValidTo.AddHours(1) > DateTime.UtcNow) return true;
                 else return false;
                
             }

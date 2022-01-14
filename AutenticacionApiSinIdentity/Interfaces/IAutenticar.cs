@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutenticacionApiSinIdentity.Modelos;
 using AutenticacionApiSinIdentity.ViewModels;
 
 namespace AutenticacionApiSinIdentity.Interfaces
@@ -13,7 +14,7 @@ namespace AutenticacionApiSinIdentity.Interfaces
 
         bool VerificarCredenciales(Credenciales creds);
 
-        void ObtenerUsuario();
+        Usuario ObtenerUsuario(Credenciales creds);
         
     }
 }

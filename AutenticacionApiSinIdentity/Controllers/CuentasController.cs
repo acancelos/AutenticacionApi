@@ -78,7 +78,7 @@ namespace AutenticacionApiSinIdentity.Controllers
             await context.SaveChangesAsync();
             
             //Uso el servicio autenticar que genera el Token
-            return token.CrearToken(credenciales);
+            return token.CrearToken(autenticar.ObtenerUsuario(credenciales));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace AutenticacionApiSinIdentity.Controllers
 
             if (autenticar.VerificarCredenciales(credenciales))
             {
-                return token.CrearToken(credenciales);
+                return token.CrearToken(autenticar.ObtenerUsuario(credenciales));
             }
             else
             {
@@ -133,7 +133,7 @@ namespace AutenticacionApiSinIdentity.Controllers
                 }
                 
 
-                RespuestaAutenticacion respuesta = token.RefreshToken(credenciales, TokenRecibido);
+                RespuestaAutenticacion respuesta = token.RefreshToken(autenticar.ObtenerUsuario(credenciales), TokenRecibido);
 
                 if (respuesta != null) return respuesta;
                 return BadRequest("Token invalido o vencido");
