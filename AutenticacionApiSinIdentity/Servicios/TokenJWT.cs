@@ -23,13 +23,16 @@ namespace AutenticacionApiSinIdentity.Servicios
     {
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
-        
+        private readonly IHttpContextAccessor accessor;
+        private readonly IAutenticar autenticar;
 
-        public TokenJWT(IConfiguration configuration, ApplicationDbContext context)
+        public TokenJWT(IConfiguration configuration, ApplicationDbContext context,IHttpContextAccessor accessor, 
+            IAutenticar autenticar)
         {
             this.configuration = configuration;
             this.context = context;
-           
+            this.accessor = accessor;
+            this.autenticar = autenticar;
         }
 
         /// <summary>
@@ -67,14 +70,16 @@ namespace AutenticacionApiSinIdentity.Servicios
 
         public RespuestaAutenticacion RefreshToken(Usuario usuario, string TokenRecibido)
         {
-          
+            //Puedo usar el HTTPContext aca y sacarlo del cuentasController
+          //var a = accessor.HttpContext.User.Identity.Name;
 
             if (ValidarToken(TokenRecibido)) return CrearToken(usuario);
             else return null;
         }
 
         private bool ValidarToken(string TokenRecibido)
-        {
+        {  
+
             
             var handler = new JwtSecurityTokenHandler();
             
