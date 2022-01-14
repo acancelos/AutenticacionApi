@@ -86,8 +86,16 @@ namespace AutenticacionApiSinIdentity
            
             
             services.AddScoped<IToken, TokenJWT>();
-            services.AddScoped<IAutenticar, CustomAuthentication>();
 
+            var metodo = Configuration["MetodoAutenticacion"];
+
+            switch (metodo)
+            {
+                case "CustomAuthentication":
+                    services.AddScoped<IAutenticar, CustomAuthentication>();
+                    break;
+            }
+            
 
             services.Configure<Usuario>(Configuration.GetSection(Usuario.Key));
 
