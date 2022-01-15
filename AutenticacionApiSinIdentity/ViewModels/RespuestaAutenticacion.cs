@@ -12,5 +12,7 @@ namespace AutenticacionApiSinIdentity.ViewModels
     {
         public string Token { get; set; }
         public DateTime Expiracion { get; set; }
+
+        public string Mensaje { get; set; }
     }
 }

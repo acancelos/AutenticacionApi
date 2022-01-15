@@ -25,6 +25,7 @@ namespace AutenticacionApiSinIdentity.Servicios
         private readonly ApplicationDbContext context;
         private readonly IHttpContextAccessor accessor;
         private readonly IAutenticar autenticar;
+        private string _mensaje = "";
 
         public TokenJWT(IConfiguration configuration, ApplicationDbContext context,IHttpContextAccessor accessor, 
             IAutenticar autenticar)
@@ -64,25 +65,26 @@ namespace AutenticacionApiSinIdentity.Servicios
             return new RespuestaAutenticacion()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(securityToken),
-                Expiracion = expiracion
+                Expiracion = expiracion,
+
+                Mensaje = "El Token se creo correctamente"
             };
         }
 
         public RespuestaAutenticacion RefreshToken(Usuario usuario, string TokenRecibido)
         {
             //Puedo usar el HTTPContext aca y sacarlo del cuentasController
-          //var a = accessor.HttpContext.User.Identity.Name;
+            //var a = accessor.HttpContext.User.Identity.Name;
 
-            if (ValidarToken(TokenRecibido)) return CrearToken(usuario);
-            else return null;
+           
+
+                if (ValidarToken(TokenRecibido)) return CrearToken(usuario);
+            else return new RespuestaAutenticacion { Token = null, Mensaje = _mensaje }; ;
         }
 
         private bool ValidarToken(string TokenRecibido)
-        {  
-
-            
-            var handler = new JwtSecurityTokenHandler();
-            
+        {            
+            var handler = new JwtSecurityTokenHandler();           
             //Valido el Token
             string secret = configuration["llaveJWT"];
             var key = Encoding.ASCII.GetBytes(secret);
@@ -97,20 +99,22 @@ namespace AutenticacionApiSinIdentity.Servicios
             try
             {
                 var claims = handler.ValidateToken(TokenRecibido, validations, out var tokenSecure);
-                
                 //ACa se puede verificar el umbral de refresh
-                if (tokenSecure.ValidTo.AddHours(1) > DateTime.UtcNow) return true;
-                else return false;
-               
+                if (tokenSecure.ValidTo.AddSeconds(1) > DateTime.UtcNow) return true;
+                else
+                {
+                    _mensaje = "El token es válido pero NO se encuentra dentro del umbral de renovación.";
+                    return false;
+                }           
             }
             catch (Exception)
             {
-
+                _mensaje = "El token ingresado es inválido";
                 return false;
-            }
-
-            
+            }          
         }
+
+        
 
         
     }

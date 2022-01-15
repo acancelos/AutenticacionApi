@@ -118,31 +118,51 @@ namespace AutenticacionApiSinIdentity.Controllers
         {
             StringValues ResultadoHeadear;
             HttpContext.Request.Headers.TryGetValue("Authorization", out ResultadoHeadear);
-            if ((string)ResultadoHeadear != null)
+            try
             {
-                string[] TokenArray = ((string)ResultadoHeadear).Split(' ');
-                string TokenRecibido = TokenArray[1];
-                var handler = new JwtSecurityTokenHandler();
-
-                
-                var jwtSecurityToken = handler.ReadJwtToken(TokenRecibido);
-                Credenciales credenciales = new Credenciales();
-                var logonClaim = jwtSecurityToken.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
-                if (logonClaim != null)
+                if ((string)ResultadoHeadear != null)
                 {
+                    string[] TokenArray = ((string)ResultadoHeadear).Split(' ');
+
+                    string TokenRecibido = "";
+                    try
+                    {
+                        TokenRecibido = TokenArray[1];
+                    }
+                    catch (Exception)
+                    {
+
+                        throw new Exception("El formato de autorización es incorrecto");
+                    }
                     
-                    credenciales.Logon = logonClaim.Value;
-                }             
+                    var handler = new JwtSecurityTokenHandler();
 
-                RespuestaAutenticacion respuesta = token.RefreshToken(autenticar.ObtenerUsuario(credenciales), TokenRecibido);
 
-                if (respuesta != null) return respuesta;
-                return BadRequest("Token invalido o vencido");
+                    var jwtSecurityToken = handler.ReadJwtToken(TokenRecibido);
+                    Credenciales credenciales = new Credenciales();
+                    var logonClaim = jwtSecurityToken.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
+                    if (logonClaim != null)
+                    {
+
+                        credenciales.Logon = logonClaim.Value;
+                    }
+
+                    RespuestaAutenticacion respuesta = token.RefreshToken(autenticar.ObtenerUsuario(credenciales), TokenRecibido);
+
+                    if (respuesta.Token != null) return respuesta;
+                    return BadRequest(respuesta.Mensaje);
+                }
+                else
+                {
+                    return BadRequest("No se envió ningún Token");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("No se envió ningún Token");
-            }          
+
+                return BadRequest(ex.Message);
+            }
+            
 
         }
 
