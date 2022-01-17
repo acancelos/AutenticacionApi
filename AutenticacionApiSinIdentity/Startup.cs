@@ -46,7 +46,13 @@ namespace AutenticacionApiSinIdentity
             //configuracion de Swagger para usar autenticacion
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutenticacionApiSinIdentity", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "Servicio REST de autenticación único, reutilizable, genérico y extensible", 
+                    Version = "v1",
+                    Description= "Diseño de un componente genérico que contemple distintos métodos de autenticación y su consecuente generación y refresh de tokens.",
+                    
+
+                });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
