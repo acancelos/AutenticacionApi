@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutenticacionApiSinIdentity.Datos;
@@ -21,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace AutenticacionApiSinIdentity
 {
     public class Startup
@@ -77,6 +80,10 @@ namespace AutenticacionApiSinIdentity
                         new string[]{}
                     }
                 });
+                var archivoXML = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var rutaXML = Path.Combine(AppContext.BaseDirectory, archivoXML);
+                c.IncludeXmlComments(rutaXML, includeControllerXmlComments: true);
+               
             });
             //Agrego el servicio de autenticacion JWTBearer
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

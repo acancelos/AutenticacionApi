@@ -59,7 +59,7 @@ namespace AutenticacionApiSinIdentity.Controllers
         /// <summary>
         /// Controlador para registrar un nuevo usuario y devolverle su Token correspondiente
         /// </summary>
-        /// <param name="credenciales"></param>
+        /// <param name="credenciales">Recibe las credenciales del usuario</param>
         /// <returns></returns>
         [HttpPost("Registrar")]
         public async Task<ActionResult<RespuestaAutenticacion>> Registrar(Credenciales credenciales)
@@ -85,7 +85,8 @@ namespace AutenticacionApiSinIdentity.Controllers
         /// Controlador para hacer un login 
         /// Devuelve el Token si está todo OK
         /// </summary>
-        /// <param name="credenciales"></param>
+        /// <param name="credenciales">Logon y password del usuario.
+        /// Para pruebas Logon: admin Password: admin</param>
         /// <returns></returns>
         [HttpPost("login")]
         public  ActionResult<RespuestaAutenticacion> Login(Credenciales credenciales)
@@ -101,17 +102,11 @@ namespace AutenticacionApiSinIdentity.Controllers
             }      
         }
 
-        [HttpGet("Pruebas")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public ActionResult Pruebas()
-        {
-            return Ok(new
-            {
-                user = authorizationService.ToString(),
-                otro = authorizationService.AuthorizeAsync(User, "Admin")
-            });
-        }
-
+        /// <summary>
+        /// Refresca el Token en caso de recibir un token valido que esté
+        /// dentro del umbral de renovación. Caso contrario devuelve un mensaje personalizado.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("RefreshToken")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public ActionResult<RespuestaAutenticacion> RenovarToken()
@@ -166,6 +161,11 @@ namespace AutenticacionApiSinIdentity.Controllers
 
         }
 
+        /// <summary>
+        /// Hace Administrador a un usuario registrado. Esto es solo a modo de prueba.
+        /// </summary>
+        /// <param name="hacerAdminUsuario">Debe ingresar el Logon del usuario que desea hacer Admin</param>
+        /// <returns></returns>
         [HttpPost("HacerAdmin")]
         public ActionResult HacerAdmin(HacerAdminUsuarioVM hacerAdminUsuario)
         {
@@ -191,6 +191,11 @@ namespace AutenticacionApiSinIdentity.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Retira el rol Administrador a un usuario. Solo a modo de Prueba.
+        /// </summary>
+        /// <param name="hacerAdminUsuario">Debe ingresar el Logon del usuario al que desea quitar permisos de Administrador</param>
+        /// <returns></returns>
         [HttpPost("RemoverAdmin")]
         public ActionResult RemoverAdmin(HacerAdminUsuarioVM hacerAdminUsuario)
         {
