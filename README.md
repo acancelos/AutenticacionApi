@@ -2,6 +2,8 @@
 
 Diseño de un componente genérico que contemple distintos métodos de autenticación y su consecuente generación y refresh de tokens.
 
+![Diagrama](https://github.com/acancelos/AutenticacionApi/blob/master/diagrama.png?raw=true)
+
 Autenticación:
 El tipo de autenticación se determina en la configuración del componente.
 
