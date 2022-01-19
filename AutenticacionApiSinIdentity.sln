@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacionApiSinIdentity", "AutenticacionApiSinIdentity\AutenticacionApiSinIdentity.csproj", "{859A6CBC-69F0-40C0-BDCD-EE8EF9626766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutenticacionApiSinIdentity", "AutenticacionApiSinIdentity\AutenticacionApiSinIdentity.csproj", "{859A6CBC-69F0-40C0-BDCD-EE8EF9626766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMSTest", "TestMSTest\TestMSTest.csproj", "{1A6C3B32-3512-41EC-8E04-CAA85A5A37EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{859A6CBC-69F0-40C0-BDCD-EE8EF9626766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{859A6CBC-69F0-40C0-BDCD-EE8EF9626766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{859A6CBC-69F0-40C0-BDCD-EE8EF9626766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C3B32-3512-41EC-8E04-CAA85A5A37EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C3B32-3512-41EC-8E04-CAA85A5A37EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C3B32-3512-41EC-8E04-CAA85A5A37EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C3B32-3512-41EC-8E04-CAA85A5A37EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
