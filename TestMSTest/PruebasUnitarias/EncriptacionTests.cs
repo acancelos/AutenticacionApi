@@ -14,11 +14,6 @@ namespace TestMSTest.PruebasUnitarias
         [TestMethod]
         public void DevuelveCadenaEncriptada()
         {
-
-
-
-
-
             //Arrange
             var inMemorySettings = new Dictionary<string, string> {
                 {"Llave", "Lllave de Test"}};
