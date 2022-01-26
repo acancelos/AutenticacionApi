@@ -1,0 +1,18 @@
+﻿C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\BasePruebas.cs
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\ClientesTests.cs
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\EncriptacionTests.cs
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\Mocks\Opciones.cs
+C:\Users\acancelos\.nuget\packages\microsoft.net.test.sdk\16.9.4\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\acancelos\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.exe
+C:\Users\acancelos\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.dll
+C:\Users\acancelos\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\Microsoft.TestPlatform.PlatformAbstractions.dll
+C:\Users\acancelos\.nuget\packages\xunit.runner.visualstudio\2.4.3\build\netcoreapp2.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\acancelos\.nuget\packages\xunit.runner.visualstudio\2.4.3\build\netcoreapp2.1\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\acancelos\.nuget\packages\xunit.runner.visualstudio\2.4.3\build\netcoreapp2.1\xunit.runner.utility.netcoreapp10.dll
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\215ad88c-b95b-4b5b-b5d2-29d4ae746e74\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\7638f167-2ab2-4b65-83f3-9b74828b3504\coverage.cobertura.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\98e0b374-1247-4d56-b00c-e2e9a0086052\coverage.cobertura.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\9bc50e37-3245-412e-a05c-286ddfb4ac63\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\9bf4d0b4-e7a7-42cf-9162-1e4de5e521f5\coverage.cobertura.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\a48b83d3-8cc3-4bcf-b40b-f511fb1ed36a\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\dfd8e921-1fd6-4dda-9076-17cdd4fdaa9a\coverage.opencover.xml

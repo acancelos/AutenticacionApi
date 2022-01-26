@@ -1,0 +1,18 @@
+﻿C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\Mocks\ConfigurationMock.cs
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\PruebasUnitarias\EncriptacionTests.cs
+C:\Users\acancelos\.nuget\packages\microsoft.net.test.sdk\16.9.4\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\acancelos\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.exe
+C:\Users\acancelos\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.dll
+C:\Users\acancelos\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\Microsoft.TestPlatform.PlatformAbstractions.dll
+C:\Users\acancelos\.nuget\packages\mstest.testadapter\2.2.3\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\acancelos\.nuget\packages\mstest.testadapter\2.2.3\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\acancelos\.nuget\packages\mstest.testadapter\2.2.3\build\netcoreapp1.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\acancelos\.nuget\packages\mstest.testadapter\2.2.3\build\netcoreapp1.0\Microsoft.TestPlatform.AdapterUtilities.dll
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestMSTest.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\0dcc895b-adcc-4299-8753-5e8dc8a7104d\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\20fb948c-6190-41a6-a286-3ed85a0b9757\coverage.cobertura.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\28c8d310-79d0-4d39-9ca4-03a965e11980\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\309bbffa-d87e-45e4-a3e5-9ba575797bc1\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\486ed4c1-cfe2-4b5e-905a-a70c24b77dac\coverage.cobertura.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\9ceb88ce-e92e-4702-a4a3-9d0c238bc702\coverage.opencover.xml
+C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestMSTest\TestResults\a24e8410-b96c-48c9-88c0-32c4a77a1682\coverage.cobertura.xml

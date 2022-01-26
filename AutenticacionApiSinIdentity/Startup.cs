@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.NewtonsoftJson;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 [assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace AutenticacionApiSinIdentity
@@ -40,8 +44,14 @@ namespace AutenticacionApiSinIdentity
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
-           
+            services.AddControllers().AddOData(op =>
+            {
+                op.Select().Filter().Count().OrderBy().SetMaxTop(50);
+                op.EnableNoDollarQueryOptions = false;
+            })
+            .AddNewtonsoftJson()
+            .AddODataNewtonsoftJson();
+
 
             services.AddDbContext<ApplicationDbContext>(
                options => options.UseSqlServer(Configuration.GetConnectionString("Conexion")));
@@ -125,6 +135,8 @@ namespace AutenticacionApiSinIdentity
             services.AddTransient<Encriptacion>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+           
 
         }
 

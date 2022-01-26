@@ -1,0 +1,13 @@
+﻿Api-Authentication: ddf71bc1ceaabe4b83ed4b1903178d4eb05c19bc
+
+
+
+dotnet test --no-build --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+
+dotnet sonarscanner begin /k:"Api-Authentication" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="ddf71bc1ceaabe4b83ed4b1903178d4eb05c19bc"
+dotnet build
+dotnet sonarscanner end /d:sonar.login="ddf71bc1ceaabe4b83ed4b1903178d4eb05c19bc"
+
+
+/d:sonar.cs.opencover.reportsPaths=C:\Users\acancelos\OneDrive - SOFRECOM ARGENTINA S.A\Documentos\Proyectos\AutenticacionApiSinIdentity\TestXunit\TestResults\7638f167-2ab2-4b65-83f3-9b74828b3504\coverage.cobertura.xml

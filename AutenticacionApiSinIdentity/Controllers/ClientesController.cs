@@ -37,11 +37,11 @@ namespace AutenticacionApiSinIdentity.Controllers
         // le agrego el atribute authoriza especificando el AutheticationScheme
         [HttpGet("VerClientes")]   
         [AllowAnonymous]
-        public List<Cliente> GetClientes()
+        public List<Cliente> GetClientes([FromBody] ODataQuery query)
         {
             //Leer los claims
-            var logon = HttpContext.User.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
-            //Usando IOptions
+            //var logon = HttpContext.User.Claims.Where(x => x.Type == "Logon").FirstOrDefault();
+            ////Usando IOptions
             var x = options.Value;
 
             return  context.Clientes.ToList();
