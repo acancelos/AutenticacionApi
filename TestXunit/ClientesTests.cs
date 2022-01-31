@@ -7,6 +7,8 @@ using AutenticacionApiSinIdentity.Servicios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Moq;
 using TestXunit.Mocks;
 using Xunit;
 
@@ -32,6 +34,20 @@ namespace TestXunit
 
 
             Assert.True(respuesta.Count>0);
+        }
+
+        [Fact]
+        public void ProbarLocalDbTest()
+        {
+            var context = LocalDbDatabaseInitializer.GetDbContextLocalDb(false);
+            var opciones = new Mock<IOptions<Usuario>>();
+
+
+            var controller = new ClientesController(opciones.Object, context);
+
+            var res = controller.GetClientes(null);
+
+            Assert.True(res.Count > 0);
         }
     }
 }

@@ -20,9 +20,7 @@ namespace TestMSTest.PruebasUnitarias
         {
             var context = LocalDbDatabaseInitializer.GetDbContextLocalDb(false);
             var opciones = new Mock<IOptions<Usuario>>();
-            opciones.Setup(x => x.Value).Returns(new Usuario { Id = 1, Logon = "admin", Password = "admin" });
             
-            context.SaveChanges();
 
             var controller = new ClientesController(opciones.Object, context);
 
